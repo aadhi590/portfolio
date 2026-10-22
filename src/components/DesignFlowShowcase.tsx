@@ -33,7 +33,7 @@ export function DesignFlowShowcase() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-50 text-blue-700 border border-blue-200/60 mb-4">
               <span className="h-1.5 w-1.5 rounded-full bg-blue-600 animate-pulse" />
-              Featured Case Study · AI Generalist (Design) Alignment
+              Featured Project · Design Workflow Automation
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-900">
               {project.title}

@@ -91,7 +91,7 @@ export const SITE_CONFIG = {
     id: "designflow-ai",
     title: "DesignFlow AI",
     category: "AI Integration · Design Workflow Automation",
-    badge: "Primary Case Study — Ather Energy AI Generalist (Design) Alignment",
+    badge: "Primary Case Study · Design Workflow Automation",
     tagline: "An AI-powered design workflow assistant that helps organize design assets, retrieve relevant visual references, and streamline early-stage design research.",
     targetAlignment:
       "Engineered to demonstrate practical AI integration into human creative workflows. Rather than attempting autonomous vehicle or industrial design, DesignFlow AI acts as a high-speed intelligence amplifier for human designers—automating asset retrieval, palette analysis, and brief decomposition.",
