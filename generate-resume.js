@@ -1,0 +1,95 @@
+const fs = require('fs');
+const path = require('path');
+
+// Minimal valid PDF 1.4 generator with actual resume text
+function createResumePdf() {
+  const contentLines = [
+    "BT /F1 18 Tf 50 780 Td (Aadhitya H) Tj ET",
+    "BT /F2 9 Tf 50 762 Td (linkedin.com/in/aadhitya-h  |  github.com/aadhi590  |  aadhihari626@gmail.com  |  Chennai, India) Tj ET",
+    
+    // Summary
+    "BT /F1 12 Tf 50 735 Td (Professional Summary) Tj ET",
+    "BT /F2 9 Tf 50 720 Td (AI engineer and full-stack developer specializing in multi-agent systems, generative AI, and production-grade backend) Tj ET",
+    "BT /F2 9 Tf 50 708 Td (development using FastAPI, LangChain, and LangGraph. Experienced in architecting agentic AI pipelines powered by Gemini API.) Tj ET",
+
+    // Education
+    "BT /F1 12 Tf 50 682 Td (Education) Tj ET",
+    "BT /F1 10 Tf 50 666 Td (SRM Institute of Science and Technology) Tj ET",
+    "BT /F2 9 Tf 400 666 Td (Aug 2023 - May 2027) Tj ET",
+    "BT /F2 9 Tf 50 652 Td (B.Tech in Computer Science and Engineering [Business Systems]  |  CGPA: 9.1) Tj ET",
+
+    // Experience
+    "BT /F1 12 Tf 50 626 Td (Work Experience) Tj ET",
+    "BT /F1 10 Tf 50 610 Td (AI & Backend Developer Intern - D Advaya FM Pvt. Ltd.) Tj ET",
+    "BT /F2 9 Tf 400 610 Td (Feb 2026 - May 2026) Tj ET",
+    "BT /F2 9 Tf 50 596 Td (- Engineered RESTful backend services using FastAPI for AI-driven Identity Verification workflows at scale.) Tj ET",
+    "BT /F2 9 Tf 50 584 Td (- Designed and implemented document verification and worker authentication modules with secure databases.) Tj ET",
+    "BT /F2 9 Tf 50 572 Td (- Architected scalable API layers supporting concurrent verification requests for government-facing environments.) Tj ET",
+
+    "BT /F1 10 Tf 50 550 Td (AI Intern - Hovernest Private Limited) Tj ET",
+    "BT /F2 9 Tf 400 550 Td (Oct 2025 - Jan 2026) Tj ET",
+    "BT /F2 9 Tf 50 536 Td (- Deployed AI-driven drone systems for real-time industrial monitoring and autonomous navigation.) Tj ET",
+    "BT /F2 9 Tf 50 524 Td (- Developed and integrated production-grade AI inference pipelines to automate real-time workflow orchestration.) Tj ET",
+
+    "BT /F1 10 Tf 50 502 Td (Database Developer Intern - Femtosoft Technologies) Tj ET",
+    "BT /F2 9 Tf 400 502 Td (June 2025 - July 2025) Tj ET",
+    "BT /F2 9 Tf 50 488 Td (- Architected scalable backend APIs, reducing response latency by ~40% through query optimization and indexing.) Tj ET",
+    "BT /F2 9 Tf 50 476 Td (- Engineered database schemas and query tuning across high-traffic production workloads.) Tj ET",
+
+    // Technical Skills
+    "BT /F1 12 Tf 50 450 Td (Technical Skills) Tj ET",
+    "BT /F2 9 Tf 50 434 Td (Languages: Python, C++, JavaScript, SQL) Tj ET",
+    "BT /F2 9 Tf 50 422 Td (AI / ML: LangChain, LangGraph, Gemini API, TensorFlow, Scikit-Learn, OpenCV, FAISS, Prompt Engineering) Tj ET",
+    "BT /F2 9 Tf 50 410 Td (Backend: FastAPI, Node.js, Express.js, REST APIs  |  Frontend: React, Next.js, Flutter) Tj ET",
+    "BT /F2 9 Tf 50 398 Td (Databases: MongoDB, Firebase Firestore, Supabase  |  Cloud: AWS [EC2, S3, Lambda], Git, Postman) Tj ET",
+
+    // Projects
+    "BT /F1 12 Tf 50 372 Td (Key Projects) Tj ET",
+    "BT /F1 10 Tf 50 356 Td (MAEC - Multi-Agent Educational Copilot) Tj ET",
+    "BT /F2 9 Tf 50 342 Td (- Multi-agent educational application coordinating Planner, Tutor, Evaluator, Coach, Critic via FastAPI & LangGraph.) Tj ET",
+    "BT /F2 9 Tf 50 330 Td (- Implemented learner-state estimation, adaptive mastery tracking, and Firebase Firestore state synchronization.) Tj ET",
+
+    "BT /F1 10 Tf 50 308 Td (CityMind AI - Agentic Urban Intelligence System) Tj ET",
+    "BT /F2 9 Tf 50 294 Td (- Multi-agent autonomous system coordinating 5+ AI agents for urban traffic & power distribution via Gemini 2.5 Pro.) Tj ET",
+    
+    "BT /F1 10 Tf 50 272 Td (Gym Management System) Tj ET",
+    "BT /F2 9 Tf 50 258 Td (- Full-stack MERN platform with real-time scheduling, member tracking, JWT auth, and secure RESTful backend.) Tj ET"
+  ];
+
+  const stream = contentLines.join("\n");
+  const streamLength = Buffer.byteLength(stream);
+
+  const objects = [
+    // 1: Catalog
+    `1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj`,
+    // 2: Pages
+    `2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj`,
+    // 3: Page
+    `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>\nendobj`,
+    // 4: Font F1 (Helvetica Bold)
+    `4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj`,
+    // 5: Font F2 (Helvetica)
+    `5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj`,
+    // 6: Stream Content
+    `6 0 obj\n<< /Length ${streamLength} >>\nstream\n${stream}\nendstream\nendobj`
+  ];
+
+  let offset = 9; // header "%PDF-1.4\n"
+  const xref = ["0000000000 65535 f "];
+  const bodyParts = [];
+
+  for (const obj of objects) {
+    xref.push(String(offset).padStart(10, '0') + " 00000 n ");
+    bodyParts.push(obj);
+    offset += Buffer.byteLength(obj) + 1; // + \n
+  }
+
+  const xrefOffset = offset;
+  const pdfString = `%PDF-1.4\n${bodyParts.join("\n")}\nxref\n0 ${xref.length}\n${xref.join("\n")}\ntrailer\n<< /Size ${xref.length} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
+
+  const outPath = path.join(__dirname, 'public', 'Aadhitya_H_Resume.pdf');
+  fs.writeFileSync(outPath, pdfString);
+  console.log(`Successfully generated verified resume PDF at: ${outPath}`);
+}
+
+createResumePdf();
